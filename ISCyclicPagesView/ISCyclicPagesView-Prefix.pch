@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'ISCyclicPagesView' target in the 'ISCyclicPagesView' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif

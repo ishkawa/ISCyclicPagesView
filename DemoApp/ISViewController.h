@@ -3,4 +3,6 @@
 
 @interface ISViewController : UIViewController <ISCyclicPagesViewDataSource, ISCyclicPagesViewDelegate>
 
+@property (nonatomic, readonly) ISCyclicPagesView *pagesView;
+
 @end

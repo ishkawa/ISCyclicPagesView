@@ -2,13 +2,26 @@
 
 @implementation ISViewController
 
+#pragma mark - accessors
+
+- (ISCyclicPagesView *)pagesView
+{
+    return (ISCyclicPagesView *)self.view;
+}
+
+#pragma mark - UIViewController events
+
 - (void)loadView
 {
-    ISCyclicPagesView *pagesView = [[ISCyclicPagesView alloc] init];
-    pagesView.dataSource = self;
-    pagesView.delegate = self;
+    self.view = [[ISCyclicPagesView alloc] init];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
-    self.view = pagesView;
+    self.pagesView.dataSource = self;
+    self.pagesView.delegate = self;
 }
 
 #pragma mark - ISCyclicPagesViewDataSource
@@ -32,7 +45,7 @@
     label.text = [@(index) stringValue];
     label.textAlignment = UITextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
-    label.font = [UIFont boldSystemFontOfSize:100.f];
+    label.font = [UIFont boldSystemFontOfSize:200.f];
     
     switch (index % 3) {
         case 0: label.backgroundColor = [UIColor redColor]; break;

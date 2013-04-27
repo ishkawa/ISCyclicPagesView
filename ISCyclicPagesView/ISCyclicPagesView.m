@@ -40,6 +40,8 @@ static NSInteger const ISReusableViewsCount = 3;
     self.scrollsToTop = NO;
     self.clipsToBounds = NO;
     self.pagingEnabled = YES;
+    self.showsHorizontalScrollIndicator = NO;
+    self.showsVerticalScrollIndicator = NO;
 }
 
 #pragma mark - accessors
@@ -72,19 +74,17 @@ static NSInteger const ISReusableViewsCount = 3;
         CGFloat lowerThreshold = size.width - size.width / 2.f;
         
         if (self.contentOffset.x > upperThreshold) {
-            NSInteger index = self.currentPage + 1;
-            if (index >= self.numberOfPages) {
-                index = 0;
-            }
-            [self scrollToPage:index direction:-1 animated:NO];
+            NSInteger index = (self.currentPage + 1) % self.numberOfPages;
+            [self scrollToPage:index
+                     direction:-1
+                      animated:NO];
         }
         
         if (self.contentOffset.x < lowerThreshold) {
-            NSInteger index = self.currentPage - 1;
-            if (index < 0) {
-                index = self.numberOfPages - 1;
-            }
-            [self scrollToPage:index direction:+1 animated:NO];
+            NSInteger index = self.currentPage - 1 >= 0 ? self.currentPage - 1 : self.numberOfPages - 1;
+            [self scrollToPage:index
+                     direction:+1
+                      animated:NO];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -113,12 +113,14 @@ static NSInteger const ISReusableViewsCount = 3;
         [reusableViews addObject:view];
         
         if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forIndex:)]) {
+            NSInteger page = index - 1 >= 0 ? index - 1 : self.numberOfPages - 1;
             [self.delegate pagesView:self
                      willDisplayView:view
-                            forIndex:index];
+                            forIndex:page];
         }
     }
     self.reusableViews = [NSArray arrayWithArray:reusableViews];
+    self.currentPage = 0;
     
     self.contentSize = CGSizeMake(size.width * 3, size.height);
     self.contentOffset = CGPointMake(size.width, 0.f);

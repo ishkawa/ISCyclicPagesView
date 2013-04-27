@@ -42,6 +42,7 @@ static NSInteger const ISReusableViewsCount = 3;
     self.pagingEnabled = YES;
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
+    self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 }
 
 #pragma mark - accessors

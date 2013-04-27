@@ -1,5 +1,6 @@
 #import "ISCyclicPagesView.h"
 
+// this value must be odd number
 static NSInteger const ISReusableViewsCount = 3;
 
 @interface ISCyclicPagesView ()
@@ -155,6 +156,27 @@ static NSInteger const ISReusableViewsCount = 3;
         // prevents stopping scrolling
         self.contentOffset = CGPointMake(x, 0.f);
     }
+}
+
+- (NSInteger)pageForView:(UIView *)view
+{
+    NSInteger index = [self.reusableViews indexOfObject:view];
+    if (index == NSNotFound) {
+        return index;
+    }
+
+    return self.currentPage + index - (ISReusableViewsCount - 1)/2;
+}
+
+- (UIView *)viewForPage:(NSInteger)page
+{
+    NSRange range = NSMakeRange(self.currentPage - (ISReusableViewsCount - 1)/2, ISReusableViewsCount);
+    if (page < range.location || page > range.location + range.length) {
+        return nil;
+    }
+    
+    NSInteger index = page - self.currentPage + (ISReusableViewsCount - 1)/2;
+    return [self.reusableViews objectAtIndex:index];
 }
 
 @end

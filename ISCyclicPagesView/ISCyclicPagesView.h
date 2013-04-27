@@ -25,9 +25,8 @@
 
 - (void)reloadData;
 
-// TODO: implement methods below
-//- (NSInteger)indexForView:(UIView *)view;
-//- (UIView *)viewForIndex:(NSInteger)index;
+- (NSInteger)pageForView:(UIView *)view;
+- (UIView *)viewForPage:(NSInteger)page;
 
 @end
 

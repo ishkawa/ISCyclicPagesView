@@ -6,6 +6,7 @@ static NSInteger const ISReusableViewsCount = 3;
 @interface ISCyclicPagesView ()
 
 @property (nonatomic) NSInteger currentPage;
+@property (nonatomic) NSInteger numberOfPages;
 @property (nonatomic, strong) NSArray *reusableViews;
 
 @end
@@ -43,25 +44,25 @@ static NSInteger const ISReusableViewsCount = 3;
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    
+    CGSize size = self.frame.size;
+    self.contentSize = CGSizeMake(size.width * ISReusableViewsCount, size.height);
+    self.contentOffset = CGPointMake(size.width, 0.f);
+    
+    [self addObserver:self forKeyPath:@"contentOffset" options:0 context:NULL];
 }
 
-#pragma mark - accessors
-
-- (NSInteger)numberOfPages
+- (void)dealloc
 {
-    return [self.dataSource numberOfPagesInPagesView:self];
+    [self removeObserver:self forKeyPath:@"contentOffset"];
 }
 
 #pragma mark - UIView events
 
 - (void)willMoveToSuperview:(UIView *)superview
 {
-    if (self.superview) {
-        [self removeObserver:self forKeyPath:@"contentOffset"];
-    }
     if (superview) {
         [self reloadData];
-        [self addObserver:self forKeyPath:@"contentOffset" options:0 context:NULL];
     }
 }
 
@@ -102,6 +103,13 @@ static NSInteger const ISReusableViewsCount = 3;
         return;
     }
     
+    self.numberOfPages = [self.dataSource numberOfPagesInPagesView:self];
+    self.currentPage = 0;
+    
+    if (!self.numberOfPages) {
+        return;
+    }
+    
     CGSize size = self.frame.size;
     NSMutableArray *reusableViews = [NSMutableArray array];
     
@@ -112,20 +120,16 @@ static NSInteger const ISReusableViewsCount = 3;
         [self addSubview:view];
         [reusableViews addObject:view];
         
-        if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forIndex:)]) {
+        if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forPage:)]) {
             NSInteger page = index - 1 >= 0 ? index - 1 : self.numberOfPages - 1;
             [self.delegate pagesView:self
                      willDisplayView:view
-                            forPage:page];
+                             forPage:page];
         }
     }
     self.reusableViews = [NSArray arrayWithArray:reusableViews];
-    self.currentPage = 0;
     
-    self.contentSize = CGSizeMake(size.width * 3, size.height);
-    self.contentOffset = CGPointMake(size.width, 0.f);
-    
-    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
+    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentPage:)]) {
         [self.delegate pagesView:self didChangeCurrentPage:self.currentPage];
     }
 }
@@ -148,7 +152,7 @@ static NSInteger const ISReusableViewsCount = 3;
             index += self.numberOfPages;
         }
         
-        if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forIndex:)]) {
+        if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forPage:)]) {
             [self.delegate pagesView:self
                      willDisplayView:view
                             forPage:index];
@@ -163,7 +167,7 @@ static NSInteger const ISReusableViewsCount = 3;
         self.contentOffset = CGPointMake(x, 0.f);
     }
     
-    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
+    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentPage:)]) {
         [self.delegate pagesView:self didChangeCurrentPage:self.currentPage];
     }
 }
@@ -175,17 +179,33 @@ static NSInteger const ISReusableViewsCount = 3;
         return index;
     }
     
-    return self.currentPage + index - (ISReusableViewsCount - 1)/2;
+    NSInteger page = (self.currentPage + index - (ISReusableViewsCount - 1)/2) % self.numberOfPages;
+    if (page < 0) {
+        page += self.numberOfPages;
+    }
+    return page;
 }
 
 - (UIView *)viewForPage:(NSInteger)page
 {
-    NSRange range = NSMakeRange(self.currentPage - (ISReusableViewsCount - 1)/2, ISReusableViewsCount);
-    if (page < range.location || page > range.location + range.length) {
+    // FIXME: too complicated
+    NSInteger inf = self.currentPage - (self.numberOfPages - 1)/2;
+    NSInteger sup = self.currentPage + (self.numberOfPages - 1)/2;
+    
+    if ((inf >= 0 && page < inf) && (sup >= self.numberOfPages && page > sup - self.numberOfPages) ) {
+        return nil;
+    }
+    if ((inf < 0 && page < inf + self.numberOfPages) && (sup < self.numberOfPages && page > sup)) {
         return nil;
     }
     
     NSInteger index = page - self.currentPage + (ISReusableViewsCount - 1)/2;
+    if (index >= ISReusableViewsCount) {
+        index -= self.numberOfPages;
+    }
+    if (index < 0) {
+        index += ISReusableViewsCount;
+    }
     return [self.reusableViews objectAtIndex:index];
 }
 

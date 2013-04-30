@@ -11,8 +11,8 @@
 
 @protocol ISCyclicPagesViewDelegate <NSObject, UIScrollViewDelegate>
 @optional
-- (void)pagesView:(ISCyclicPagesView *)pagesView willDisplayView:(UIView *)view forIndex:(NSInteger)index;
-- (void)pagesView:(ISCyclicPagesView *)pagesView didChangeCurrentIndex:(NSInteger)index;
+- (void)pagesView:(ISCyclicPagesView *)pagesView willDisplayView:(UIView *)view forPage:(NSInteger)page;
+- (void)pagesView:(ISCyclicPagesView *)pagesView didChangeCurrentPage:(NSInteger)page;
 
 @end
 

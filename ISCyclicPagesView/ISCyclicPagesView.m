@@ -116,7 +116,7 @@ static NSInteger const ISReusableViewsCount = 3;
             NSInteger page = index - 1 >= 0 ? index - 1 : self.numberOfPages - 1;
             [self.delegate pagesView:self
                      willDisplayView:view
-                            forIndex:page];
+                            forPage:page];
         }
     }
     self.reusableViews = [NSArray arrayWithArray:reusableViews];
@@ -126,7 +126,7 @@ static NSInteger const ISReusableViewsCount = 3;
     self.contentOffset = CGPointMake(size.width, 0.f);
     
     if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
-        [self.delegate pagesView:self didChangeCurrentIndex:self.currentPage];
+        [self.delegate pagesView:self didChangeCurrentPage:self.currentPage];
     }
 }
 
@@ -151,7 +151,7 @@ static NSInteger const ISReusableViewsCount = 3;
         if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forIndex:)]) {
             [self.delegate pagesView:self
                      willDisplayView:view
-                            forIndex:index];
+                            forPage:index];
         }
     }
     
@@ -164,7 +164,7 @@ static NSInteger const ISReusableViewsCount = 3;
     }
     
     if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
-        [self.delegate pagesView:self didChangeCurrentIndex:self.currentPage];
+        [self.delegate pagesView:self didChangeCurrentPage:self.currentPage];
     }
 }
 

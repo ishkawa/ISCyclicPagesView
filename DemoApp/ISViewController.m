@@ -39,7 +39,7 @@
 
 #pragma mark - ISCyclicPagesViewDelegate
 
-- (void)pagesView:(ISCyclicPagesView *)pagesView willDisplayView:(UIView *)view forIndex:(NSInteger)index
+- (void)pagesView:(ISCyclicPagesView *)pagesView willDisplayView:(UIView *)view forPage:(NSInteger)index
 {
     UILabel *label = (UILabel *)view;
     label.text = [@(index) stringValue];

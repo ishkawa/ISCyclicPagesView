@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
   s.name         = "ISCyclicPagesView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "UIScrollView for cyclic pages."
   s.homepage     = "https://github.com/ishkawa/ISCyclicPagesView"
   s.author       = { "Yosuke Ishikawa" => "y@ishkawa.org" }
-  s.source       = { :git => "https://github.com/ishkawa/ISCyclicPagesView.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/ishkawa/ISCyclicPagesView.git", :tag => "0.0.2" }
   s.platform     = :ios, '4.3'
   s.requires_arc = true
   s.source_files = 'ISCyclicPagesView/**/*.{h,m}'

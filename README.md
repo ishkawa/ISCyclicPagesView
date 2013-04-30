@@ -54,6 +54,10 @@ If you use CocoaPods, you can install ISCyclicPagesView by inserting config belo
 pod 'ISCyclicPagesView', :git => 'https://github.com/ishkawa/ISHTTPOperation.git'
 ```
 
+## Known Issues
+
+- currently, ISCyclicPagesView does not support auto-rotation.
+
 ## License
 
 Copyright (c) 2013 Yosuke Ishikawa

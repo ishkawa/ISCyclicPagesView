@@ -108,7 +108,6 @@ static NSInteger const ISReusableViewsCount = 3;
     for (NSInteger index = 0; index < ISReusableViewsCount; index++) {
         UIView *view = [self.dataSource reusableViewForPagesView:self];
         view.frame = CGRectMake(index * size.width, 0.f, size.width, size.height);
-        view.backgroundColor = [UIColor blueColor];
         
         [self addSubview:view];
         [reusableViews addObject:view];

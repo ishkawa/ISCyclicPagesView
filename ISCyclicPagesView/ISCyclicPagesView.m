@@ -124,6 +124,10 @@ static NSInteger const ISReusableViewsCount = 3;
     
     self.contentSize = CGSizeMake(size.width * 3, size.height);
     self.contentOffset = CGPointMake(size.width, 0.f);
+    
+    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
+        [self.delegate pagesView:self didChangeCurrentIndex:self.currentPage];
+    }
 }
 
 - (void)scrollToPage:(NSInteger)page direction:(NSInteger)direction animated:(BOOL)animated
@@ -158,6 +162,10 @@ static NSInteger const ISReusableViewsCount = 3;
         // prevents stopping scrolling
         self.contentOffset = CGPointMake(x, 0.f);
     }
+    
+    if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentIndex:)]) {
+        [self.delegate pagesView:self didChangeCurrentIndex:self.currentPage];
+    }
 }
 
 - (NSInteger)pageForView:(UIView *)view
@@ -166,7 +174,7 @@ static NSInteger const ISReusableViewsCount = 3;
     if (index == NSNotFound) {
         return index;
     }
-
+    
     return self.currentPage + index - (ISReusableViewsCount - 1)/2;
 }
 

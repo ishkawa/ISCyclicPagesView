@@ -1,6 +1,6 @@
 ISCyclicPagesView is a subclass of UIScrollView for cyclic pages.
 
-<iframe src="http://player.vimeo.com/video/64948676?title=0&amp;byline=0&amp;portrait=0" width="500" height="281" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+[Demo Video](https://vimeo.com/64948676)
 
 ## Requirements
 

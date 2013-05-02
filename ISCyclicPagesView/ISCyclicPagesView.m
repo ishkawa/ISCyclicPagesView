@@ -43,7 +43,6 @@ static NSInteger const ISReusableViewsCount = 3;
     self.pagingEnabled = YES;
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
-    self.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     
     CGSize size = self.frame.size;
     self.contentSize = CGSizeMake(size.width * ISReusableViewsCount, size.height);

@@ -187,24 +187,14 @@ static NSInteger const ISReusableViewsCount = 3;
 
 - (UIView *)viewForPage:(NSInteger)page
 {
-    // FIXME: too complicated
-    NSInteger inf = self.currentPage - (self.numberOfPages - 1)/2;
-    NSInteger sup = self.currentPage + (self.numberOfPages - 1)/2;
-    
-    if ((inf >= 0 && page < inf) && (sup >= self.numberOfPages && page > sup - self.numberOfPages) ) {
-        return nil;
-    }
-    if ((inf < 0 && page < inf + self.numberOfPages) && (sup < self.numberOfPages && page > sup)) {
+    if (page < self.currentPage - (ISReusableViewsCount - 1)/2 ||
+        page > self.currentPage + (ISReusableViewsCount - 1)/2) {
         return nil;
     }
     
-    NSInteger index = page - self.currentPage + (ISReusableViewsCount - 1)/2;
-    if (index >= ISReusableViewsCount) {
-        index -= self.numberOfPages;
-    }
-    if (index < 0) {
-        index += ISReusableViewsCount;
-    }
+    NSInteger currentIndex = (ISReusableViewsCount - 1)/2;
+    NSInteger index = currentIndex + (page - self.currentPage);
+    
     return [self.reusableViews objectAtIndex:index];
 }
 

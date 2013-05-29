@@ -70,6 +70,10 @@ static NSInteger const ISReusableViewsCount = 3;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentOffset"]) {
+        if (!self.numberOfPages) {
+            return;
+        }
+        
         CGSize size = self.frame.size;
         CGFloat upperThreshold = size.width + size.width / 2.f;
         CGFloat lowerThreshold = size.width - size.width / 2.f;

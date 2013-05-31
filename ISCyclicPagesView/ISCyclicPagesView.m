@@ -143,7 +143,14 @@ static NSInteger const ISReusableViewsCount = 3;
         return;
     }
     
-    self.currentPage = page;
+    CGFloat x = self.contentOffset.x + self.frame.size.width * direction;
+    if (animated) {
+        [self setContentOffset:CGPointMake(x, 0.f) animated:animated];
+    } else {
+        // prevents stopping scrolling
+        self.contentOffset = CGPointMake(x, 0.f);
+        self.currentPage = page;
+    }
     
     for (UIView *view in self.reusableViews) {
         NSInteger viewIndex = [self.reusableViews indexOfObject:view];
@@ -158,16 +165,8 @@ static NSInteger const ISReusableViewsCount = 3;
         if ([self.delegate respondsToSelector:@selector(pagesView:willDisplayView:forPage:)]) {
             [self.delegate pagesView:self
                      willDisplayView:view
-                            forPage:index];
+                             forPage:index];
         }
-    }
-    
-    CGFloat x = self.contentOffset.x + self.frame.size.width * direction;
-    if (animated) {
-        [self setContentOffset:CGPointMake(x, 0.f) animated:animated];
-    } else {
-        // prevents stopping scrolling
-        self.contentOffset = CGPointMake(x, 0.f);
     }
     
     if ([self.delegate respondsToSelector:@selector(pagesView:didChangeCurrentPage:)]) {

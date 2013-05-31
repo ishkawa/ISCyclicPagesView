@@ -24,6 +24,7 @@
 @property (nonatomic, assign) id <ISCyclicPagesViewDelegate> delegate;
 
 - (void)reloadData;
+- (void)scrollToPage:(NSInteger)page direction:(NSInteger)direction animated:(BOOL)animated;
 
 - (NSInteger)pageForView:(UIView *)view;
 - (UIView *)viewForPage:(NSInteger)page;

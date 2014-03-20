@@ -51,7 +51,7 @@ Add files under `ISCyclicPagesView/` to your Xcode project.
 
 If you use CocoaPods, you can install ISCyclicPagesView by inserting config below.
 ```
-pod 'ISCyclicPagesView', :git => 'https://github.com/ishkawa/ISHTTPOperation.git'
+pod 'ISCyclicPagesView', :git => 'https://github.com/ishkawa/ISCyclicPagesView.git'
 ```
 
 ## Known Issues
